@@ -1,7 +1,8 @@
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponseRedirect, Http404
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import ensure_csrf_cookie
+from urllib3.util import parse_url
 
 from caps.models import LinkModel
 from .forms import ShortenerForm
@@ -34,4 +35,10 @@ def redirect_checksum(request, checksum):
         link = LinkModel.objects.get(checksum=checksum)
     except ObjectDoesNotExist:
         raise Http404
-    return HttpResponseRedirect(link.long_url)
+    else:
+        url = link.long_url
+        urlparse_obj = parse_url(url)
+        if not urlparse_obj.scheme:
+            url = "http://{}".format(url)
+        print("Redirecting to {}".format(url))
+        return redirect(url)
