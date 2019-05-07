@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="." method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="SUBMIT">
+    </form>
+    {% if link %}
+    <p><a href="/L/{{link.checksum}}">{{request.get_host|upper}}/L/{{link.checksum}}</a> IS POINTING TO <a href="//{{link.long_url}}">{{link.long_url}}</a></p>
+    {% endif %}
+</body>
+</html>
