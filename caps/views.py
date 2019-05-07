@@ -15,6 +15,7 @@ def get_long_url(request):
         if form.is_valid():
             link = LinkModel(**form.cleaned_data)
             link.save()
+            print("Created new link for checksum {} to {}".format(link.checksum, link.long_url))
             return redirect("/?SUM={}".format(link.checksum))
     else:
         form = ShortenerForm()
